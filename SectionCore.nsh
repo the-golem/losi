@@ -9,7 +9,8 @@
 	!include WinVer.nsh
 	!include SectionsInclude.nsh
 	!include EnumLoginUsers.nsh
-
+	
+	SectionGroup "LiteStep Files"
 	Section "$(NAME_SecCore)" SecCore
 		${If} ${FileExists} "$INSTDIR\litestep.exe"
 			Push "$INSTDIR"
@@ -43,7 +44,9 @@
 			Pop $username
 			${EnumLoginUsersArray->Shift} "$username"
 		${EndIf}
-
+	SectionEnd
+	
+	Section "Profiles" SecProfiles
 		Push $0
 		Push $1
 		Push $2
@@ -204,14 +207,6 @@
 		CreateShortCut "$DESKTOP\Set Explorer as Shell.lnk" '"$INSTDIR\utilities\wxlua.exe"' '"$INSTDIR\utilities\LOSS.lua" explorer' "$INSTDIR\losi\SetShellExplorer.ico"
 		CreateShortCut "$DESKTOP\Set LiteStep as Shell.lnk" '"$INSTDIR\utilities\wxlua.exe"' '"$INSTDIR\utilities\LOSS.lua" litestep' "$INSTDIR\losi\SetShellLS.ico"
 
-		SetOverwrite on
-
-		; Install all the modules and their docs
-		SetOutPath "$INSTDIR\modules\"
-		!insertmacro UNINSTALL.LOG_OPEN_INSTALL
-		File /r /x ".svn" ".\LS\modules\*"
-		!insertmacro UNINSTALL.LOG_CLOSE_INSTALL
-
 		call backupPersonal
 
 		; Install the personal files
@@ -231,6 +226,17 @@
 		${If} $R9 == "LSKilled"
 			ExecShell open "$INSTDIR\litestep.exe" ;Launch LiteStep
 			StrCpy $hasStartedLS "true"
-		${EndIf}
+		${EndIf}		
 	SectionEnd
+	
+	Section "Modules" SecModules
+		SetOverwrite on
+
+		; Install all the modules and their docs
+		SetOutPath "$INSTDIR\modules\"
+		!insertmacro UNINSTALL.LOG_OPEN_INSTALL
+		File /r /x ".svn" ".\LS\modules\*"
+		!insertmacro UNINSTALL.LOG_CLOSE_INSTALL
+	SectionEnd
+	SectionGroupEnd
 !endif

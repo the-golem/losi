@@ -6,7 +6,7 @@
 	Page custom ioHowLS
 	
 	Function ioHowLS
-		${IfNot} ${SectionIsSelected} ${SecCore}
+		${IfNot} ${SectionIsSelected} ${SecProfiles}
 			Abort
 		${EndIf}
 		StrCmp $advancedInstall "true" 0 end

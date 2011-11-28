@@ -7,7 +7,7 @@
 	Page custom ioWhereProfiles
 
 	Function ioWhereProfiles
-		${IfNot} ${SectionIsSelected} ${SecCore}
+		${IfNot} ${SectionIsSelected} ${SecProfiles}
 			Abort
 		${EndIf}
 		
